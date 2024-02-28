@@ -102,6 +102,7 @@ name = "secp256k1"
 version = "0.1.0"
 dependencies = [
  "num-bigint",
+ "num-integer",
  "num-traits",
  "rand",
 ]
