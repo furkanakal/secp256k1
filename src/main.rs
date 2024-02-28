@@ -17,6 +17,15 @@ fn generate_private_key() -> BigInt {
     rng.gen_range(BigInt::one()..n)
 }
 
+fn derive_public_key(private_key: &BigInt) -> (BigInt, BigInt) {
+    let g = Point {
+        x: BigInt::parse_bytes(G_X.as_bytes(), 16).unwrap(),
+        y: BigInt::parse_bytes(G_Y.as_bytes(), 16).unwrap(),
+    };
+    let public_key = g * private_key;
+    (public_key.x, public_key.y)
+}
+
 #[derive(Clone, Debug)]
 struct Point {
     x: BigInt,
