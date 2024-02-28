@@ -1,6 +1,7 @@
 use num_bigint::{BigInt, RandBigInt};
 use num_traits::One;
 use rand::thread_rng;
+use tiny_keccak::{Keccak, Hasher};
 
 mod utils;
 
@@ -19,6 +20,9 @@ fn main() {
 
     let public_key = derive_public_key(&private_key);
     println!("Public Key: ({}, {})", public_key.0, public_key.1);
+
+    let ethereum_address = convert_to_ethereum_address(&public_key);
+    println!("Ethereum Address: {}", ethereum_address);
 }
 
 fn generate_private_key() -> BigInt {
@@ -39,3 +43,21 @@ fn derive_public_key(private_key: &BigInt) -> (BigInt, BigInt) {
     let public_key = scalar_multiplication(&g, private_key, &a, &modulus);
     (public_key.x, public_key.y)
 }
+
+fn convert_to_ethereum_address(public_key: &(BigInt, BigInt)) -> String {
+    let public_key_bytes = [
+        &public_key.0.to_bytes_be().1[..],
+        &public_key.1.to_bytes_be().1[..],
+    ]
+    .concat();
+
+    let mut hasher = Keccak::v256();
+    let mut output = [0u8; 32]; // Keccak-256 outputs 32 bytes
+
+    hasher.update(&public_key_bytes);
+    hasher.finalize(&mut output);
+
+    let address_bytes = &output[12..]; // Skip the first 12 bytes, take the last 20
+    format!("0x{}", hex::encode(address_bytes))
+}
+
