@@ -1,6 +1,6 @@
-use num_bigint::{BigInt, Sign};
+use num_bigint::{BigInt, RandBigInt, Sign};
 use num_traits::{One, Zero};
-use rand::{thread_rng, Rng};
+use rand::thread_rng;
 use std::ops::{Add, Mul, Sub};
 
 // secp256k1 curve parameters
@@ -21,7 +21,12 @@ fn main() {
 fn generate_private_key() -> BigInt {
     let n = BigInt::parse_bytes(N.as_bytes(), 16).unwrap();
     let mut rng = thread_rng();
-    rng.gen_range(BigInt::one()..n)
+    // Approximate the desired byte length of the number.
+    let byte_size = (n.bits() + 7) / 8;
+    let mut private_key = rng.gen_bigint(byte_size);
+    // Reduce it modulo n to ensure it's within the range [0, n-1].
+    private_key %= &n;
+    private_key
 }
 
 fn derive_public_key(private_key: &BigInt) -> (BigInt, BigInt) {
