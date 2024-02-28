@@ -11,6 +11,12 @@ const G_Y: &str = "483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D
 
 
 
+fn generate_private_key() -> BigInt {
+    let n = BigInt::parse_bytes(N.as_bytes(), 16).unwrap();
+    let mut rng = thread_rng();
+    rng.gen_range(BigInt::one()..n)
+}
+
 #[derive(Clone, Debug)]
 struct Point {
     x: BigInt,
