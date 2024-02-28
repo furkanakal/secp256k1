@@ -9,7 +9,14 @@ const N: &str = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD036414
 const G_X: &str = "79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798";
 const G_Y: &str = "483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8";
 
+fn main() {
+    // Example of generating a private key and deriving its public key
+    let private_key = generate_private_key();
+    println!("Private Key: {}", private_key);
 
+    let public_key = derive_public_key(&private_key);
+    println!("Public Key: ({}, {})", public_key.0, public_key.1);
+}
 
 fn generate_private_key() -> BigInt {
     let n = BigInt::parse_bytes(N.as_bytes(), 16).unwrap();
