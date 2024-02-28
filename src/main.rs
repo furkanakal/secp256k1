@@ -1,3 +1,10 @@
-fn main() {
-    println!("Hello, world!");
-}
+use num_bigint::{BigInt, Sign};
+use num_traits::{One, Zero};
+use rand::{thread_rng, Rng};
+use std::ops::{Add, Mul, Sub};
+
+// secp256k1 curve parameters
+const P: &str = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F";
+const N: &str = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141";
+const G_X: &str = "79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798";
+const G_Y: &str = "483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8";
